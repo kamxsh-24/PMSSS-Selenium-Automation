@@ -14,155 +14,107 @@ public class RegisterTest extends BaseTest {
 
 
     // =========================================================
-    // BEFORE EACH TEST
+    // OPEN REGISTER PAGE
     // =========================================================
 
     @BeforeMethod
     public void openRegisterPage() {
 
-        driver.get(ConfigReader.getBaseUrl() + "/register");
+        driver.get(
+                ConfigReader.getBaseUrl() + "/register"
+        );
 
         registerPage = new RegisterPage(driver);
 
-        System.out.println();
-        System.out.println("========================================");
+        System.out.println("\n========================================");
         System.out.println("OPENING REGISTER PAGE");
         System.out.println("========================================");
     }
 
 
     // =========================================================
-    // VALID TEST CASE 1
-    // VERIFY REGISTER PAGE
+    // TEST 1 - VERIFY ACCOUNT INFO FIELDS
     // =========================================================
 
     @Test
-    public void verifyRegisterPage() {
+    public void verifyAccountInfoFields() {
 
-        String testName = "Verify Register Page";
-
-        try {
-
-            System.out.println("START: " + testName);
-
-            String currentUrl = driver.getCurrentUrl();
-
-            System.out.println("Current URL: " + currentUrl);
-
-            Assert.assertTrue(
-                    currentUrl.contains("/register"),
-                    "Register page URL is incorrect"
-            );
-
-            System.out.println("PASS: Register page URL");
-            System.out.println("PASS: " + testName);
-
-        } catch (AssertionError e) {
-
-            System.out.println("FAIL: " + testName);
-            System.out.println("Reason: " + e.getMessage());
-
-            throw e;
-
-        } catch (Exception e) {
-
-            System.out.println("FAIL: " + testName);
-            System.out.println("Reason: " + e.getClass().getSimpleName());
-            System.out.println("Details: " + e.getMessage());
-
-            throw e;
-        }
-    }
-
-
-    // =========================================================
-    // VALID TEST CASE 2
-    // VERIFY ALL REGISTRATION FIELDS
-    // =========================================================
-
-    @Test
-    public void verifyRegistrationFields() {
-
-        String testName = "Verify Registration Fields";
+        String testName = "Verify Account Info Fields";
 
         try {
 
-            System.out.println("START: " + testName);
-
-            boolean fullName =
-                    registerPage.isFullNameDisplayed();
-
-            if (fullName) {
-                System.out.println("PASS: Full Name field");
-            } else {
-                System.out.println("FAIL: Full Name field");
-            }
-
-
-            boolean email =
-                    registerPage.isEmailDisplayed();
-
-            if (email) {
-                System.out.println("PASS: Email field");
-            } else {
-                System.out.println("FAIL: Email field");
-            }
-
-
-            boolean password =
-                    registerPage.isPasswordDisplayed();
-
-            if (password) {
-                System.out.println("PASS: Password field");
-            } else {
-                System.out.println("FAIL: Password field");
-            }
-
-
-            boolean confirmPassword =
-                    registerPage.isConfirmPasswordDisplayed();
-
-            if (confirmPassword) {
-                System.out.println("PASS: Confirm Password field");
-            } else {
-                System.out.println("FAIL: Confirm Password field");
-            }
-
+            System.out.println("Checking Full Name...");
 
             Assert.assertTrue(
-                    fullName,
+                    registerPage.isFullNameDisplayed(),
                     "Full Name field is not displayed"
             );
 
+            System.out.println("PASS : Full Name");
+
+
+            System.out.println("Checking Email...");
+
             Assert.assertTrue(
-                    email,
+                    registerPage.isEmailDisplayed(),
                     "Email field is not displayed"
             );
 
+            System.out.println("PASS : Email");
+
+
+            System.out.println("Checking Password...");
+
             Assert.assertTrue(
-                    password,
+                    registerPage.isPasswordDisplayed(),
                     "Password field is not displayed"
             );
 
+            System.out.println("PASS : Password");
+
+
+            System.out.println("Checking Confirm Password...");
+
             Assert.assertTrue(
-                    confirmPassword,
+                    registerPage.isConfirmPasswordDisplayed(),
                     "Confirm Password field is not displayed"
             );
 
-            System.out.println("PASS: " + testName);
+            System.out.println("PASS : Confirm Password");
+
+
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
+            System.out.println(
+                    "Reason : All Account Info fields are displayed."
+            );
 
         } catch (AssertionError e) {
 
-            System.out.println("FAIL: " + testName);
-            System.out.println("Reason: " + e.getMessage());
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
+            System.out.println(
+                    "Reason : One or more Account Info fields are missing."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
 
             throw e;
 
         } catch (Exception e) {
 
-            System.out.println("FAIL: " + testName);
-            System.out.println("Reason: " + e.getClass().getSimpleName());
-            System.out.println("Details: " + e.getMessage());
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
+            System.out.println(
+                    "Reason : Selenium encountered an unexpected error."
+            );
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
 
             throw e;
         }
@@ -170,41 +122,42 @@ public class RegisterTest extends BaseTest {
 
 
     // =========================================================
-    // VALID TEST CASE 3
-    // ENTER VALID REGISTRATION DATA
+    // TEST 2 - VALID ACCOUNT INFORMATION
     // =========================================================
 
     @Test
-    public void verifyValidRegistrationData() {
+    public void validAccountInformation() {
 
-        String testName = "Enter Valid Registration Data";
+        String testName = "Valid Account Information";
 
         try {
 
-            System.out.println("START: " + testName);
-
             String email =
-                    "kamesh"
-                            + System.currentTimeMillis()
-                            + "@gmail.com";
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com";
 
             registerPage.enterFullName(
                     "Kamesh Automation"
             );
 
-            System.out.println("PASS: Full Name entered");
+            System.out.println("PASS : Full Name entered");
 
 
-            registerPage.enterEmail(email);
+            registerPage.enterEmail(
+                    email
+            );
 
-            System.out.println("PASS: Valid Email entered");
+            System.out.println("PASS : Valid Email entered");
 
 
             registerPage.enterPassword(
                     "Password@123"
             );
 
-            System.out.println("PASS: Password entered");
+            System.out.println(
+                    "PASS : Valid Password entered"
+            );
 
 
             registerPage.enterConfirmPassword(
@@ -212,89 +165,28 @@ public class RegisterTest extends BaseTest {
             );
 
             System.out.println(
-                    "PASS: Confirm Password entered"
+                    "PASS : Confirm Password entered"
             );
 
 
             System.out.println("----------------------------------------");
-            System.out.println("PASS: " + testName);
-            System.out.println("Email used: " + email);
-            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
+            System.out.println(
+                    "Reason : Valid account information entered successfully."
+            );
 
         } catch (Exception e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL: " + testName);
-            System.out.println("Reason: " + e.getClass().getSimpleName());
-            System.out.println("Details: " + e.getMessage());
-            System.out.println("----------------------------------------");
-
-            throw e;
-        }
-    }
-
-
-    // =========================================================
-    // VALID TEST CASE 4
-    // VALID DATA + NEXT STEP
-    // =========================================================
-
-    @Test
-    public void verifyValidDataNextStep() {
-
-        String testName = "Valid Data Next Step";
-
-        try {
-
-            System.out.println("START: " + testName);
-
-            String email =
-                    "kamesh"
-                            + System.currentTimeMillis()
-                            + "@gmail.com";
-
-
-            registerPage.enterFullName(
-                    "Kamesh Automation"
-            );
-
-            registerPage.enterEmail(email);
-
-            registerPage.enterPassword(
-                    "Password@123"
-            );
-
-            registerPage.enterConfirmPassword(
-                    "Password@123"
-            );
-
-            System.out.println("Valid registration data entered");
-
-
+            System.out.println("FAIL : " + testName);
             System.out.println(
-                    "Next Step button is ready for testing"
-            );
-
-            /*
-             * Your current RegisterPage.java does not contain
-             * clickNextButton().
-             *
-             * So we are not clicking the button here.
-             *
-             * Add the method to RegisterPage.java when you
-             * want to test the Next Step functionality.
-             */
-
-            System.out.println("PASS: " + testName);
-
-        } catch (Exception e) {
-
-            System.out.println("FAIL: " + testName);
-            System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
+                    "Reason : Unable to enter valid account information."
             );
             System.out.println(
-                    "Details: " + e.getMessage()
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
             );
 
             throw e;
@@ -303,168 +195,60 @@ public class RegisterTest extends BaseTest {
 
 
     // =========================================================
-    // INVALID TEST CASE 1
-    // EMPTY FULL NAME
+    // TEST 3 - INVALID PASSWORD - LESS THAN 8 CHARACTERS
     // =========================================================
 
     @Test
-    public void verifyEmptyFullName() {
+    public void invalidPasswordLessThan8Characters() {
 
-        String testName = "Empty Full Name";
-
-        try {
-
-            System.out.println("START: " + testName);
-
-            // Full Name intentionally empty
-
-            String email =
-                    "kamesh"
-                            + System.currentTimeMillis()
-                            + "@gmail.com";
-
-            registerPage.enterEmail(email);
-
-            registerPage.enterPassword(
-                    "Password@123"
-            );
-
-            registerPage.enterConfirmPassword(
-                    "Password@123"
-            );
-
-            System.out.println(
-                    "Full Name intentionally left empty"
-            );
-
-            System.out.println(
-                    "Checking Full Name validation..."
-            );
-
-            System.out.println(
-                    "TEST EXECUTED: " + testName
-            );
-
-        } catch (Exception e) {
-
-            System.out.println("FAIL: " + testName);
-            System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
-            );
-            System.out.println(
-                    "Details: " + e.getMessage()
-            );
-
-            throw e;
-        }
-    }
-
-
-    // =========================================================
-    // INVALID TEST CASE 2
-    // EMPTY EMAIL
-    // =========================================================
-
-    @Test
-    public void verifyEmptyEmail() {
-
-        String testName = "Empty Email";
+        String testName =
+                "Invalid Password - Less Than 8 Characters";
 
         try {
-
-            System.out.println("START: " + testName);
-
-            registerPage.enterFullName(
-                    "Kamesh Automation"
-            );
-
-            // Email intentionally empty
-
-            registerPage.enterPassword(
-                    "Password@123"
-            );
-
-            registerPage.enterConfirmPassword(
-                    "Password@123"
-            );
-
-            System.out.println(
-                    "Email intentionally left empty"
-            );
-
-            System.out.println(
-                    "Checking Email validation..."
-            );
-
-            System.out.println(
-                    "TEST EXECUTED: " + testName
-            );
-
-        } catch (Exception e) {
-
-            System.out.println("FAIL: " + testName);
-            System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
-            );
-            System.out.println(
-                    "Details: " + e.getMessage()
-            );
-
-            throw e;
-        }
-    }
-
-
-    // =========================================================
-    // INVALID TEST CASE 3
-    // INVALID EMAIL
-    // =========================================================
-
-    @Test
-    public void verifyInvalidEmail() {
-
-        String testName = "Invalid Email";
-
-        try {
-
-            System.out.println("START: " + testName);
 
             registerPage.enterFullName(
                     "Kamesh Automation"
             );
 
             registerPage.enterEmail(
-                    "kamesh@"
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
             );
 
             registerPage.enterPassword(
-                    "Password@123"
+                    "Pass@12"
             );
 
             registerPage.enterConfirmPassword(
-                    "Password@123"
+                    "Pass@12"
+            );
+
+
+            System.out.println(
+                    "Entered password: Pass@12"
             );
 
             System.out.println(
-                    "Invalid email entered: kamesh@"
+                    "Expected: Password should be rejected."
             );
 
-            System.out.println(
-                    "Checking email validation..."
-            );
 
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
             System.out.println(
-                    "TEST EXECUTED: " + testName
+                    "Reason : Invalid short password was entered for validation."
             );
 
         } catch (Exception e) {
 
-            System.out.println("FAIL: " + testName);
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
             System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
+                    "Reason : Could not execute short password test."
             );
             System.out.println(
-                    "Details: " + e.getMessage()
+                    "Error : " + e.getMessage()
             );
 
             throw e;
@@ -473,55 +257,60 @@ public class RegisterTest extends BaseTest {
 
 
     // =========================================================
-    // INVALID TEST CASE 4
-    // INVALID EMAIL FORMAT
+    // TEST 4 - INVALID PASSWORD - NO UPPERCASE
     // =========================================================
 
     @Test
-    public void verifyInvalidEmailFormat() {
+    public void invalidPasswordNoUppercase() {
 
-        String testName = "Invalid Email Format";
+        String testName =
+                "Invalid Password - No Uppercase";
 
         try {
-
-            System.out.println("START: " + testName);
 
             registerPage.enterFullName(
                     "Kamesh Automation"
             );
 
             registerPage.enterEmail(
-                    "kameshgmail.com"
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
             );
 
             registerPage.enterPassword(
-                    "Password@123"
+                    "password@123"
             );
 
             registerPage.enterConfirmPassword(
-                    "Password@123"
+                    "password@123"
+            );
+
+
+            System.out.println(
+                    "Entered password: password@123"
             );
 
             System.out.println(
-                    "Invalid email entered: kameshgmail.com"
+                    "Expected: Password should be rejected because uppercase is missing."
             );
 
-            System.out.println(
-                    "Checking email format validation..."
-            );
 
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
             System.out.println(
-                    "TEST EXECUTED: " + testName
+                    "Reason : Password without uppercase was entered for validation."
             );
 
         } catch (Exception e) {
 
-            System.out.println("FAIL: " + testName);
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
             System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
+                    "Reason : Could not execute uppercase validation test."
             );
             System.out.println(
-                    "Details: " + e.getMessage()
+                    "Error : " + e.getMessage()
             );
 
             throw e;
@@ -530,56 +319,60 @@ public class RegisterTest extends BaseTest {
 
 
     // =========================================================
-    // INVALID TEST CASE 5
-    // EMPTY PASSWORD
+    // TEST 5 - INVALID PASSWORD - NO LOWERCASE
     // =========================================================
 
     @Test
-    public void verifyEmptyPassword() {
+    public void invalidPasswordNoLowercase() {
 
-        String testName = "Empty Password";
+        String testName =
+                "Invalid Password - No Lowercase";
 
         try {
-
-            System.out.println("START: " + testName);
-
-            String email =
-                    "kamesh"
-                            + System.currentTimeMillis()
-                            + "@gmail.com";
 
             registerPage.enterFullName(
                     "Kamesh Automation"
             );
 
-            registerPage.enterEmail(email);
+            registerPage.enterEmail(
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
+            );
 
-            // Password intentionally empty
+            registerPage.enterPassword(
+                    "PASSWORD@123"
+            );
 
             registerPage.enterConfirmPassword(
-                    "Password@123"
+                    "PASSWORD@123"
+            );
+
+
+            System.out.println(
+                    "Entered password: PASSWORD@123"
             );
 
             System.out.println(
-                    "Password intentionally left empty"
+                    "Expected: Password should be rejected because lowercase is missing."
             );
 
-            System.out.println(
-                    "Checking Password validation..."
-            );
 
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
             System.out.println(
-                    "TEST EXECUTED: " + testName
+                    "Reason : Password without lowercase was entered for validation."
             );
 
         } catch (Exception e) {
 
-            System.out.println("FAIL: " + testName);
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
             System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
+                    "Reason : Could not execute lowercase validation test."
             );
             System.out.println(
-                    "Details: " + e.getMessage()
+                    "Error : " + e.getMessage()
             );
 
             throw e;
@@ -588,56 +381,60 @@ public class RegisterTest extends BaseTest {
 
 
     // =========================================================
-    // INVALID TEST CASE 6
-    // EMPTY CONFIRM PASSWORD
+    // TEST 6 - INVALID PASSWORD - NO NUMBER
     // =========================================================
 
     @Test
-    public void verifyEmptyConfirmPassword() {
+    public void invalidPasswordNoNumber() {
 
-        String testName = "Empty Confirm Password";
+        String testName =
+                "Invalid Password - No Number";
 
         try {
-
-            System.out.println("START: " + testName);
-
-            String email =
-                    "kamesh"
-                            + System.currentTimeMillis()
-                            + "@gmail.com";
 
             registerPage.enterFullName(
                     "Kamesh Automation"
             );
 
-            registerPage.enterEmail(email);
+            registerPage.enterEmail(
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
+            );
 
             registerPage.enterPassword(
-                    "Password@123"
+                    "Password@abc"
             );
 
-            // Confirm Password intentionally empty
+            registerPage.enterConfirmPassword(
+                    "Password@abc"
+            );
+
 
             System.out.println(
-                    "Confirm Password intentionally left empty"
+                    "Entered password: Password@abc"
             );
 
             System.out.println(
-                    "Checking Confirm Password validation..."
+                    "Expected: Password should be rejected because number is missing."
             );
 
+
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
             System.out.println(
-                    "TEST EXECUTED: " + testName
+                    "Reason : Password without number was entered for validation."
             );
 
         } catch (Exception e) {
 
-            System.out.println("FAIL: " + testName);
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
             System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
+                    "Reason : Could not execute number validation test."
             );
             System.out.println(
-                    "Details: " + e.getMessage()
+                    "Error : " + e.getMessage()
             );
 
             throw e;
@@ -646,62 +443,126 @@ public class RegisterTest extends BaseTest {
 
 
     // =========================================================
-    // INVALID TEST CASE 7
-    // PASSWORD MISMATCH
+    // TEST 7 - INVALID PASSWORD - NO SPECIAL CHARACTER
     // =========================================================
 
     @Test
-    public void verifyPasswordMismatch() {
+    public void invalidPasswordNoSpecialCharacter() {
 
-        String testName = "Password Mismatch";
+        String testName =
+                "Invalid Password - No Special Character";
 
         try {
-
-            System.out.println("START: " + testName);
-
-            String email =
-                    "kamesh"
-                            + System.currentTimeMillis()
-                            + "@gmail.com";
 
             registerPage.enterFullName(
                     "Kamesh Automation"
             );
 
-            registerPage.enterEmail(email);
+            registerPage.enterEmail(
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
+            );
+
+            registerPage.enterPassword(
+                    "Password123"
+            );
+
+            registerPage.enterConfirmPassword(
+                    "Password123"
+            );
+
+
+            System.out.println(
+                    "Entered password: Password123"
+            );
+
+            System.out.println(
+                    "Expected: Password should be rejected because special character is missing."
+            );
+
+
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
+            System.out.println(
+                    "Reason : Password without special character was entered for validation."
+            );
+
+        } catch (Exception e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
+            System.out.println(
+                    "Reason : Could not execute special-character validation test."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
+
+            throw e;
+        }
+    }
+
+
+    // =========================================================
+    // TEST 8 - CONFIRM PASSWORD MISMATCH
+    // =========================================================
+
+    @Test
+    public void invalidConfirmPasswordMismatch() {
+
+        String testName =
+                "Invalid Confirm Password - Mismatch";
+
+        try {
+
+            registerPage.enterFullName(
+                    "Kamesh Automation"
+            );
+
+            registerPage.enterEmail(
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
+            );
 
             registerPage.enterPassword(
                     "Password@123"
             );
 
             registerPage.enterConfirmPassword(
-                    "Different@123"
+                    "Password@456"
             );
+
 
             System.out.println(
                     "Password: Password@123"
             );
 
             System.out.println(
-                    "Confirm Password: Different@123"
+                    "Confirm Password: Password@456"
             );
 
             System.out.println(
-                    "Checking password mismatch validation..."
+                    "Expected: Password mismatch should be rejected."
             );
 
+
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
             System.out.println(
-                    "TEST EXECUTED: " + testName
+                    "Reason : Mismatched passwords entered for validation."
             );
 
         } catch (Exception e) {
 
-            System.out.println("FAIL: " + testName);
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
             System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
+                    "Reason : Could not execute password mismatch test."
             );
             System.out.println(
-                    "Details: " + e.getMessage()
+                    "Error : " + e.getMessage()
             );
 
             throw e;
@@ -710,58 +571,77 @@ public class RegisterTest extends BaseTest {
 
 
     // =========================================================
-    // INVALID TEST CASE 8
-    // SHORT PASSWORD
+    // TEST 9 - VERIFY NEXT STEP
     // =========================================================
 
     @Test
-    public void verifyShortPassword() {
+    public void verifyNextStep() {
 
-        String testName = "Short Password";
+        String testName =
+                "Verify Next Step Button";
 
         try {
-
-            System.out.println("START: " + testName);
-
-            String email =
-                    "kamesh"
-                            + System.currentTimeMillis()
-                            + "@gmail.com";
 
             registerPage.enterFullName(
                     "Kamesh Automation"
             );
 
-            registerPage.enterEmail(email);
+            registerPage.enterEmail(
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
+            );
 
             registerPage.enterPassword(
-                    "123"
+                    "Password@123"
             );
 
             registerPage.enterConfirmPassword(
-                    "123"
+                    "Password@123"
             );
 
-            System.out.println(
-                    "Short password entered: 123"
-            );
+
+            registerPage.clickNextButton();
 
             System.out.println(
-                    "Checking password length validation..."
+                    "PASS : Next Step button clicked"
             );
 
-            System.out.println(
-                    "TEST EXECUTED: " + testName
+
+            Assert.assertTrue(
+                    registerPage.isPhoneDisplayed(),
+                    "Personal & Academic section did not open"
             );
+
+
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
+            System.out.println(
+                    "Reason : Next Step opened Personal & Academic section."
+            );
+
+        } catch (AssertionError e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
+            System.out.println(
+                    "Reason : Next Step did not open Academic section."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
+
+            throw e;
 
         } catch (Exception e) {
 
-            System.out.println("FAIL: " + testName);
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
             System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
+                    "Reason : Selenium could not click Next Step."
             );
             System.out.println(
-                    "Details: " + e.getMessage()
+                    "Error : " + e.getMessage()
             );
 
             throw e;
@@ -770,53 +650,416 @@ public class RegisterTest extends BaseTest {
 
 
     // =========================================================
-    // INVALID TEST CASE 9
-    // ALL FIELDS EMPTY
+    // TEST 10 - VERIFY ACADEMIC INFO FIELDS
     // =========================================================
 
     @Test
-    public void verifyAllFieldsEmpty() {
+    public void verifyAcademicInfoFields() {
 
-        String testName = "All Registration Fields Empty";
+        String testName =
+                "Verify Personal & Academic Fields";
 
         try {
 
-            System.out.println("START: " + testName);
+            // Account information
 
-            // No data entered
+            registerPage.enterFullName(
+                    "Kamesh Automation"
+            );
 
-            System.out.println(
-                    "Full Name: EMPTY"
+            registerPage.enterEmail(
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
+            );
+
+            registerPage.enterPassword(
+                    "Password@123"
+            );
+
+            registerPage.enterConfirmPassword(
+                    "Password@123"
+            );
+
+
+            // Move to Academic section
+
+            registerPage.clickNextButton();
+
+
+            // Phone
+
+            Assert.assertTrue(
+                    registerPage.isPhoneDisplayed(),
+                    "Phone Number field is not displayed"
             );
 
             System.out.println(
-                    "Email: EMPTY"
+                    "PASS : Phone Number"
+            );
+
+
+            // DOB
+
+            Assert.assertTrue(
+                    registerPage.isDateOfBirthDisplayed(),
+                    "Date of Birth field is not displayed"
             );
 
             System.out.println(
-                    "Password: EMPTY"
+                    "PASS : Date of Birth"
+            );
+
+
+            // Institution
+
+            Assert.assertTrue(
+                    registerPage.isInstitutionDisplayed(),
+                    "Institution Name field is not displayed"
             );
 
             System.out.println(
-                    "Confirm Password: EMPTY"
+                    "PASS : Institution Name"
+            );
+
+
+            // Course
+
+            Assert.assertTrue(
+                    registerPage.isCourseDisplayed(),
+                    "Course Name field is not displayed"
             );
 
             System.out.println(
-                    "Checking required field validation..."
+                    "PASS : Course Name"
+            );
+
+
+            // Year
+
+            Assert.assertTrue(
+                    registerPage.isYearDisplayed(),
+                    "Year of Study field is not displayed"
             );
 
             System.out.println(
-                    "TEST EXECUTED: " + testName
+                    "PASS : Year of Study"
+            );
+
+
+            // Back
+
+            Assert.assertTrue(
+                    registerPage.isBackButtonDisplayed(),
+                    "Back button is not displayed"
+            );
+
+            System.out.println(
+                    "PASS : Back Button"
+            );
+
+
+            // Register
+
+            Assert.assertTrue(
+                    registerPage.isRegisterButtonDisplayed(),
+                    "Register button is not displayed"
+            );
+
+            System.out.println(
+                    "PASS : Register Button"
+            );
+
+
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
+            System.out.println(
+                    "Reason : All Personal & Academic fields are displayed."
+            );
+
+        } catch (AssertionError e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
+            System.out.println(
+                    "Reason : Academic field validation failed."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
+
+            throw e;
+
+        } catch (Exception e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
+            System.out.println(
+                    "Reason : Selenium encountered an unexpected error."
+            );
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
+
+            throw e;
+        }
+    }
+
+
+    // =========================================================
+    // TEST 11 - VALID ACADEMIC INFORMATION
+    // =========================================================
+
+    @Test
+    public void validAcademicInformation() {
+
+        String testName =
+                "Valid Personal & Academic Information";
+
+        try {
+
+            // Account section
+
+            registerPage.enterFullName(
+                    "Kamesh Automation"
+            );
+
+            registerPage.enterEmail(
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
+            );
+
+            registerPage.enterPassword(
+                    "Password@123"
+            );
+
+            registerPage.enterConfirmPassword(
+                    "Password@123"
+            );
+
+
+            registerPage.clickNextButton();
+
+
+            // Academic section
+
+            registerPage.enterPhone(
+                    "9876543210"
+            );
+
+            System.out.println(
+                    "PASS : Valid Phone Number entered"
+            );
+
+
+            registerPage.enterDateOfBirth(
+                    "01-01-2000"
+            );
+
+            System.out.println(
+                    "PASS : Date of Birth entered"
+            );
+
+
+            registerPage.enterInstitution(
+                    "Sri Shakthi Institute of Engineering and Technology"
+            );
+
+            System.out.println(
+                    "PASS : Institution Name entered"
+            );
+
+
+            registerPage.enterCourse(
+                    "B.Tech Information Technology"
+            );
+
+            System.out.println(
+                    "PASS : Course Name entered"
+            );
+
+
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
+            System.out.println(
+                    "Reason : Valid Academic information entered successfully."
             );
 
         } catch (Exception e) {
 
-            System.out.println("FAIL: " + testName);
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
             System.out.println(
-                    "Reason: " + e.getClass().getSimpleName()
+                    "Reason : Could not enter Academic information."
             );
             System.out.println(
-                    "Details: " + e.getMessage()
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
+
+            throw e;
+        }
+    }
+
+
+    // =========================================================
+    // TEST 12 - INVALID PHONE NUMBER
+    // =========================================================
+
+    @Test
+    public void invalidPhoneNumber() {
+
+        String testName =
+                "Invalid Phone Number";
+
+        try {
+
+            registerPage.enterFullName(
+                    "Kamesh Automation"
+            );
+
+            registerPage.enterEmail(
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
+            );
+
+            registerPage.enterPassword(
+                    "Password@123"
+            );
+
+            registerPage.enterConfirmPassword(
+                    "Password@123"
+            );
+
+            registerPage.clickNextButton();
+
+
+            // Invalid phone
+
+            registerPage.enterPhone(
+                    "12345"
+            );
+
+
+            System.out.println(
+                    "Entered invalid phone: 12345"
+            );
+
+            System.out.println(
+                    "Expected: Phone number should be rejected."
+            );
+
+
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
+            System.out.println(
+                    "Reason : Invalid phone number entered for validation."
+            );
+
+        } catch (Exception e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
+            System.out.println(
+                    "Reason : Could not execute invalid phone test."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
+
+            throw e;
+        }
+    }
+
+
+    // =========================================================
+    // TEST 13 - VERIFY BACK BUTTON
+    // =========================================================
+
+    @Test
+    public void verifyBackButton() {
+
+        String testName =
+                "Verify Back Button";
+
+        try {
+
+            registerPage.enterFullName(
+                    "Kamesh Automation"
+            );
+
+            registerPage.enterEmail(
+                    "kamesh" +
+                            System.currentTimeMillis() +
+                            "@gmail.com"
+            );
+
+            registerPage.enterPassword(
+                    "Password@123"
+            );
+
+            registerPage.enterConfirmPassword(
+                    "Password@123"
+            );
+
+
+            registerPage.clickNextButton();
+
+
+            System.out.println(
+                    "Academic section opened."
+            );
+
+
+            registerPage.clickBackButton();
+
+
+            System.out.println(
+                    "Back button clicked."
+            );
+
+
+            Assert.assertTrue(
+                    registerPage.isFullNameDisplayed(),
+                    "Account Info section did not open after Back button"
+            );
+
+
+            System.out.println("----------------------------------------");
+            System.out.println("PASS : " + testName);
+            System.out.println(
+                    "Reason : Back button returned to Account Info."
+            );
+
+        } catch (AssertionError e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
+            System.out.println(
+                    "Reason : Back button did not work correctly."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
+
+            throw e;
+
+        } catch (Exception e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("FAIL : " + testName);
+            System.out.println(
+                    "Reason : Selenium could not verify Back button."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
             );
 
             throw e;
