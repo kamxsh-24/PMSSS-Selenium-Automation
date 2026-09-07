@@ -23,8 +23,14 @@ public class LoginPage {
     private By password =
             By.id("login-password");
 
+    private By showPasswordButton =
+            By.xpath("//button[@aria-label='Show password']");
+
     private By loginButton =
-            By.id("login-button");
+            By.id("login-btn");
+
+    private By signUpLink =
+            By.xpath("//a[@href='/register']");
 
 
     // =========================================================
@@ -35,66 +41,29 @@ public class LoginPage {
 
         this.driver = driver;
 
-        this.wait =
-                new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(
+                driver,
+                Duration.ofSeconds(10)
+        );
     }
 
 
     // =========================================================
-    // VERIFY EMAIL FIELD
+    // EMAIL
     // =========================================================
 
     public boolean isEmailDisplayed() {
 
-        WebElement element =
-                wait.until(
-                        ExpectedConditions.visibilityOfElementLocated(email)
-                );
-
-        return element.isDisplayed();
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(email)
+        ).isDisplayed();
     }
-
-
-    // =========================================================
-    // VERIFY PASSWORD FIELD
-    // =========================================================
-
-    public boolean isPasswordDisplayed() {
-
-        WebElement element =
-                wait.until(
-                        ExpectedConditions.visibilityOfElementLocated(password)
-                );
-
-        return element.isDisplayed();
-    }
-
-
-    // =========================================================
-    // VERIFY LOGIN BUTTON
-    // =========================================================
-
-    public boolean isLoginButtonDisplayed() {
-
-        WebElement element =
-                wait.until(
-                        ExpectedConditions.visibilityOfElementLocated(loginButton)
-                );
-
-        return element.isDisplayed();
-    }
-
-
-    // =========================================================
-    // ENTER EMAIL
-    // =========================================================
 
     public void enterEmail(String emailAddress) {
 
-        WebElement element =
-                wait.until(
-                        ExpectedConditions.visibilityOfElementLocated(email)
-                );
+        WebElement element = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(email)
+        );
 
         element.clear();
         element.sendKeys(emailAddress);
@@ -102,15 +71,21 @@ public class LoginPage {
 
 
     // =========================================================
-    // ENTER PASSWORD
+    // PASSWORD
     // =========================================================
+
+    public boolean isPasswordDisplayed() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(password)
+        ).isDisplayed();
+    }
 
     public void enterPassword(String passwordValue) {
 
-        WebElement element =
-                wait.until(
-                        ExpectedConditions.visibilityOfElementLocated(password)
-                );
+        WebElement element = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(password)
+        );
 
         element.clear();
         element.sendKeys(passwordValue);
@@ -118,25 +93,79 @@ public class LoginPage {
 
 
     // =========================================================
-    // CLICK LOGIN BUTTON
+    // SHOW PASSWORD BUTTON
     // =========================================================
+
+    public boolean isShowPasswordButtonDisplayed() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        showPasswordButton
+                )
+        ).isDisplayed();
+    }
+
+    public void clickShowPassword() {
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        showPasswordButton
+                )
+        ).click();
+    }
+
+
+    // =========================================================
+    // LOGIN BUTTON
+    // =========================================================
+
+    public boolean isLoginButtonDisplayed() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        loginButton
+                )
+        ).isDisplayed();
+    }
+
+    public boolean isLoginButtonEnabled() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        loginButton
+                )
+        ).isEnabled();
+    }
 
     public void clickLoginButton() {
 
         wait.until(
-                ExpectedConditions.elementToBeClickable(loginButton)
+                ExpectedConditions.elementToBeClickable(
+                        loginButton
+                )
         ).click();
     }
 
+
     // =========================================================
-    // CLICK REGISTER LINKED DISPLAYED
+    // SIGN UP LINK
     // =========================================================
 
     public boolean isRegisterLinkDisplayed() {
+
         return wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//a[@href='/register']")
+                        signUpLink
                 )
         ).isDisplayed();
+    }
+
+    public void clickRegisterLink() {
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        signUpLink
+                )
+        ).click();
     }
 }

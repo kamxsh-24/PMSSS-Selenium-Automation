@@ -2,14 +2,19 @@ package tests;
 
 import base.BaseTest;
 import utils.ConfigReader;
+import pages.LoginPage;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.LoginPage;
 
 public class LoginTest extends BaseTest {
 
     private LoginPage loginPage;
+
+    // =========================================================
+    // OPEN LOGIN PAGE BEFORE EVERY TEST
+    // =========================================================
 
     @BeforeMethod
     public void openLoginPage() {
@@ -20,9 +25,10 @@ public class LoginTest extends BaseTest {
 
         loginPage = new LoginPage(driver);
 
-        System.out.println("\n========================================");
+        System.out.println();
+        System.out.println("========================================");
         System.out.println("Opening Login Page");
-        System.out.println("URL: " + driver.getCurrentUrl());
+        System.out.println("URL : " + driver.getCurrentUrl());
         System.out.println("========================================");
     }
 
@@ -38,33 +44,40 @@ public class LoginTest extends BaseTest {
 
         try {
 
-            System.out.println("START: " + testName);
-
-            boolean urlCorrect =
-                    driver.getCurrentUrl().contains("/login");
-
             Assert.assertTrue(
-                    urlCorrect,
-                    "Login page URL is incorrect"
+                    driver.getCurrentUrl().contains("/login"),
+                    "Login URL is incorrect"
             );
 
-            System.out.println("PASS : " + testName);
-            System.out.println("Reason : Login page opened successfully.");
+            System.out.println("✅ PASS : " + testName);
+            System.out.println(
+                    "Reason : Login page opened successfully."
+            );
 
         } catch (AssertionError e) {
 
-            System.out.println("FAIL : " + testName);
-            System.out.println("Reason : Login page did not open correctly.");
-            System.out.println("Error : " + e.getMessage());
+            System.out.println("❌ FAIL : " + testName);
+            System.out.println(
+                    "Reason : Login page URL is incorrect."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
 
             throw e;
 
         } catch (Exception e) {
 
-            System.out.println("FAIL : " + testName);
-            System.out.println("Reason : Unexpected Selenium error.");
-            System.out.println("Error : " + e.getClass().getSimpleName());
-            System.out.println("Details : " + e.getMessage());
+            System.out.println("❌ FAIL : " + testName);
+            System.out.println(
+                    "Reason : Unable to open login page."
+            );
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
 
             throw e;
         }
@@ -82,48 +95,33 @@ public class LoginTest extends BaseTest {
 
         try {
 
-            System.out.println("\nSTART: " + testName);
-
-            // Email
-            System.out.println("Checking Email field...");
-
             boolean email =
                     loginPage.isEmailDisplayed();
 
             if (email) {
-                System.out.println("PASS : Email field");
+                System.out.println(
+                        "✅ PASS : Email field displayed"
+                );
             } else {
-                System.out.println("FAIL : Email field");
+                System.out.println(
+                        "❌ FAIL : Email field not displayed"
+                );
             }
 
-
-            // Password
-            System.out.println("Checking Password field...");
 
             boolean password =
                     loginPage.isPasswordDisplayed();
 
             if (password) {
-                System.out.println("PASS : Password field");
+                System.out.println(
+                        "✅ PASS : Password field displayed"
+                );
             } else {
-                System.out.println("FAIL : Password field");
+                System.out.println(
+                        "❌ FAIL : Password field not displayed"
+                );
             }
 
-
-            // Login button
-            System.out.println("Checking Login button...");
-
-            boolean loginButton =
-                    loginPage.isLoginButtonDisplayed();
-
-            if (loginButton) {
-                System.out.println("PASS : Login button");
-            } else {
-                System.out.println("FAIL : Login button");
-            }
-
-
-            System.out.println("----------------------------------------");
 
             Assert.assertTrue(
                     email,
@@ -135,32 +133,39 @@ public class LoginTest extends BaseTest {
                     "Password field is not displayed"
             );
 
-            Assert.assertTrue(
-                    loginButton,
-                    "Login button is not displayed"
-            );
 
-            System.out.println("PASS : " + testName);
+            System.out.println("----------------------------------------");
+            System.out.println("✅ PASS : " + testName);
             System.out.println(
-                    "Reason : All login fields and button are displayed."
+                    "Reason : Email and Password fields are displayed."
             );
 
         } catch (AssertionError e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
-            System.out.println("Reason : One or more login elements are missing.");
-            System.out.println("Error : " + e.getMessage());
+            System.out.println("❌ FAIL : " + testName);
+            System.out.println(
+                    "Reason : Login field validation failed."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
 
             throw e;
 
         } catch (Exception e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
-            System.out.println("Reason : Selenium encountered an unexpected error.");
-            System.out.println("Error : " + e.getClass().getSimpleName());
-            System.out.println("Details : " + e.getMessage());
+            System.out.println("❌ FAIL : " + testName);
+            System.out.println(
+                    "Reason : Selenium encountered an unexpected error."
+            );
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
 
             throw e;
         }
@@ -172,60 +177,62 @@ public class LoginTest extends BaseTest {
     // =========================================================
 
     @Test
-    public void verifyValidLogin() {
+    public void validLogin() {
 
         String testName = "Valid Login";
 
         try {
 
-            System.out.println("\nSTART: " + testName);
-
-            String validEmail = "YOUR_VALID_EMAIL";
-            String validPassword = "YOUR_VALID_PASSWORD";
-
             System.out.println("Entering valid email...");
 
-            loginPage.enterEmail(validEmail);
+            loginPage.enterEmail(
+                    "YOUR_VALID_EMAIL@gmail.com"
+            );
 
-            System.out.println("PASS : Email entered");
+            System.out.println(
+                    "   ✓ Valid email entered"
+            );
 
 
             System.out.println("Entering valid password...");
 
-            loginPage.enterPassword(validPassword);
+            loginPage.enterPassword(
+                    "YOUR_VALID_PASSWORD"
+            );
 
-            System.out.println("PASS : Password entered");
+            System.out.println(
+                    "   ✓ Valid password entered"
+            );
 
 
-            System.out.println("Clicking Login button...");
+            System.out.println("Clicking Sign In...");
 
             loginPage.clickLoginButton();
 
-            System.out.println("PASS : Login button clicked");
+            System.out.println(
+                    "   ✓ Sign In button clicked"
+            );
 
 
             System.out.println("----------------------------------------");
-            System.out.println("PASS : " + testName);
+            System.out.println("✅ PASS : " + testName);
             System.out.println(
                     "Reason : Valid login credentials were submitted successfully."
             );
 
-        } catch (AssertionError e) {
-
-            System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
-            System.out.println("Reason : Login assertion failed.");
-            System.out.println("Error : " + e.getMessage());
-
-            throw e;
-
         } catch (Exception e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
-            System.out.println("Reason : Unable to perform valid login.");
-            System.out.println("Error : " + e.getClass().getSimpleName());
-            System.out.println("Details : " + e.getMessage());
+            System.out.println("❌ FAIL : " + testName);
+            System.out.println(
+                    "Reason : Valid login could not be completed."
+            );
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
 
             throw e;
         }
@@ -237,28 +244,39 @@ public class LoginTest extends BaseTest {
     // =========================================================
 
     @Test
-    public void verifyInvalidEmail() {
+    public void invalidEmail() {
 
-        String testName = "Invalid Email Login";
+        String testName = "Invalid Email";
 
         try {
 
-            System.out.println("\nSTART: " + testName);
+            loginPage.enterEmail(
+                    "invalid-email"
+            );
 
-            loginPage.enterEmail("invalidemail");
+            System.out.println(
+                    "   ✓ Invalid email entered"
+            );
 
-            System.out.println("PASS : Invalid email entered");
 
-            loginPage.enterPassword("Password@123");
+            loginPage.enterPassword(
+                    "Password@123"
+            );
 
-            System.out.println("PASS : Password entered");
+            System.out.println(
+                    "   ✓ Password entered"
+            );
+
 
             loginPage.clickLoginButton();
 
-            System.out.println("PASS : Login button clicked");
+            System.out.println(
+                    "   ✓ Sign In button clicked"
+            );
+
 
             System.out.println("----------------------------------------");
-            System.out.println("PASS : " + testName);
+            System.out.println("✅ PASS : " + testName);
             System.out.println(
                     "Reason : Invalid email test executed successfully."
             );
@@ -266,12 +284,16 @@ public class LoginTest extends BaseTest {
         } catch (Exception e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
+            System.out.println("❌ FAIL : " + testName);
             System.out.println(
-                    "Reason : Unable to execute invalid email test."
+                    "Reason : Invalid email test could not be executed."
             );
-            System.out.println("Error : " + e.getClass().getSimpleName());
-            System.out.println("Details : " + e.getMessage());
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
 
             throw e;
         }
@@ -279,45 +301,119 @@ public class LoginTest extends BaseTest {
 
 
     // =========================================================
-    // TEST 5 - EMPTY EMAIL
+    // TEST 5 - INVALID PASSWORD
     // =========================================================
 
     @Test
-    public void verifyEmptyEmail() {
+    public void invalidPassword() {
 
-        String testName = "Empty Email Login";
+        String testName = "Invalid Password";
 
         try {
 
-            System.out.println("\nSTART: " + testName);
+            loginPage.enterEmail(
+                    "YOUR_VALID_EMAIL@gmail.com"
+            );
+
+            System.out.println(
+                    "   ✓ Valid email entered"
+            );
+
+
+            loginPage.enterPassword(
+                    "WrongPassword@999"
+            );
+
+            System.out.println(
+                    "   ✓ Invalid password entered"
+            );
+
+
+            loginPage.clickLoginButton();
+
+            System.out.println(
+                    "   ✓ Sign In button clicked"
+            );
+
+
+            System.out.println("----------------------------------------");
+            System.out.println("✅ PASS : " + testName);
+            System.out.println(
+                    "Reason : Invalid password test executed successfully."
+            );
+
+        } catch (Exception e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("❌ FAIL : " + testName);
+            System.out.println(
+                    "Reason : Invalid password test could not be executed."
+            );
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
+
+            throw e;
+        }
+    }
+
+
+    // =========================================================
+    // TEST 6 - EMPTY EMAIL
+    // =========================================================
+
+    @Test
+    public void emptyEmail() {
+
+        String testName = "Empty Email";
+
+        try {
 
             loginPage.enterEmail("");
 
-            System.out.println("PASS : Empty email entered");
+            System.out.println(
+                    "   ✓ Email left empty"
+            );
 
-            loginPage.enterPassword("Password@123");
 
-            System.out.println("PASS : Password entered");
+            loginPage.enterPassword(
+                    "Password@123"
+            );
+
+            System.out.println(
+                    "   ✓ Password entered"
+            );
+
 
             loginPage.clickLoginButton();
 
-            System.out.println("PASS : Login button clicked");
+            System.out.println(
+                    "   ✓ Sign In button clicked"
+            );
+
 
             System.out.println("----------------------------------------");
-            System.out.println("PASS : " + testName);
+            System.out.println("✅ PASS : " + testName);
             System.out.println(
-                    "Reason : Empty email validation test executed."
+                    "Reason : Empty email test executed successfully."
             );
 
         } catch (Exception e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
+            System.out.println("❌ FAIL : " + testName);
             System.out.println(
-                    "Reason : Unable to execute empty email test."
+                    "Reason : Empty email test could not be executed."
             );
-            System.out.println("Error : " + e.getClass().getSimpleName());
-            System.out.println("Details : " + e.getMessage());
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
 
             throw e;
         }
@@ -325,45 +421,58 @@ public class LoginTest extends BaseTest {
 
 
     // =========================================================
-    // TEST 6 - EMPTY PASSWORD
+    // TEST 7 - EMPTY PASSWORD
     // =========================================================
 
     @Test
-    public void verifyEmptyPassword() {
+    public void emptyPassword() {
 
-        String testName = "Empty Password Login";
+        String testName = "Empty Password";
 
         try {
 
-            System.out.println("\nSTART: " + testName);
+            loginPage.enterEmail(
+                    "YOUR_VALID_EMAIL@gmail.com"
+            );
 
-            loginPage.enterEmail("test@example.com");
+            System.out.println(
+                    "   ✓ Email entered"
+            );
 
-            System.out.println("PASS : Email entered");
 
             loginPage.enterPassword("");
 
-            System.out.println("PASS : Empty password entered");
+            System.out.println(
+                    "   ✓ Password left empty"
+            );
+
 
             loginPage.clickLoginButton();
 
-            System.out.println("PASS : Login button clicked");
+            System.out.println(
+                    "   ✓ Sign In button clicked"
+            );
+
 
             System.out.println("----------------------------------------");
-            System.out.println("PASS : " + testName);
+            System.out.println("✅ PASS : " + testName);
             System.out.println(
-                    "Reason : Empty password validation test executed."
+                    "Reason : Empty password test executed successfully."
             );
 
         } catch (Exception e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
+            System.out.println("❌ FAIL : " + testName);
             System.out.println(
-                    "Reason : Unable to execute empty password test."
+                    "Reason : Empty password test could not be executed."
             );
-            System.out.println("Error : " + e.getClass().getSimpleName());
-            System.out.println("Details : " + e.getMessage());
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
 
             throw e;
         }
@@ -371,45 +480,56 @@ public class LoginTest extends BaseTest {
 
 
     // =========================================================
-    // TEST 7 - WRONG PASSWORD
+    // TEST 8 - BOTH EMAIL AND PASSWORD EMPTY
     // =========================================================
 
     @Test
-    public void verifyWrongPassword() {
+    public void bothFieldsEmpty() {
 
-        String testName = "Wrong Password Login";
+        String testName = "Both Fields Empty";
 
         try {
 
-            System.out.println("\nSTART: " + testName);
+            loginPage.enterEmail("");
 
-            loginPage.enterEmail("test@example.com");
+            System.out.println(
+                    "   ✓ Email left empty"
+            );
 
-            System.out.println("PASS : Email entered");
 
-            loginPage.enterPassword("WrongPassword@999");
+            loginPage.enterPassword("");
 
-            System.out.println("PASS : Wrong password entered");
+            System.out.println(
+                    "   ✓ Password left empty"
+            );
+
 
             loginPage.clickLoginButton();
 
-            System.out.println("PASS : Login button clicked");
+            System.out.println(
+                    "   ✓ Sign In button clicked"
+            );
+
 
             System.out.println("----------------------------------------");
-            System.out.println("PASS : " + testName);
+            System.out.println("✅ PASS : " + testName);
             System.out.println(
-                    "Reason : Wrong password test executed successfully."
+                    "Reason : Empty email and password test executed successfully."
             );
 
         } catch (Exception e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
+            System.out.println("❌ FAIL : " + testName);
             System.out.println(
-                    "Reason : Unable to execute wrong password test."
+                    "Reason : Empty fields test could not be executed."
             );
-            System.out.println("Error : " + e.getClass().getSimpleName());
-            System.out.println("Details : " + e.getMessage());
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
 
             throw e;
         }
@@ -417,7 +537,70 @@ public class LoginTest extends BaseTest {
 
 
     // =========================================================
-    // TEST 8 - VERIFY REGISTER LINK
+    // TEST 9 - SHOW PASSWORD
+    // =========================================================
+
+    @Test
+    public void verifyShowPassword() {
+
+        String testName = "Verify Show Password";
+
+        try {
+
+            loginPage.enterPassword(
+                    "Password@123"
+            );
+
+            boolean result =
+                    loginPage.isShowPasswordButtonDisplayed();
+
+            Assert.assertTrue(
+                    result,
+                    "Show Password button is not displayed"
+            );
+
+            loginPage.clickShowPassword();
+
+            System.out.println("----------------------------------------");
+            System.out.println("✅ PASS : " + testName);
+            System.out.println(
+                    "Reason : Show Password button is displayed and clickable."
+            );
+
+        } catch (AssertionError e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("❌ FAIL : " + testName);
+            System.out.println(
+                    "Reason : Show Password button validation failed."
+            );
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
+
+            throw e;
+
+        } catch (Exception e) {
+
+            System.out.println("----------------------------------------");
+            System.out.println("❌ FAIL : " + testName);
+            System.out.println(
+                    "Reason : Show Password button could not be tested."
+            );
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
+
+            throw e;
+        }
+    }
+
+
+    // =========================================================
+    // TEST 10 - REGISTER LINK
     // =========================================================
 
     @Test
@@ -426,8 +609,6 @@ public class LoginTest extends BaseTest {
         String testName = "Verify Register Link";
 
         try {
-
-            System.out.println("\nSTART: " + testName);
 
             boolean result =
                     loginPage.isRegisterLinkDisplayed();
@@ -438,7 +619,7 @@ public class LoginTest extends BaseTest {
             );
 
             System.out.println("----------------------------------------");
-            System.out.println("PASS : " + testName);
+            System.out.println("✅ PASS : " + testName);
             System.out.println(
                     "Reason : Register link is displayed successfully."
             );
@@ -446,23 +627,29 @@ public class LoginTest extends BaseTest {
         } catch (AssertionError e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
+            System.out.println("❌ FAIL : " + testName);
             System.out.println(
-                    "Reason : Register link is not displayed."
+                    "Reason : Register link validation failed."
             );
-            System.out.println("Error : " + e.getMessage());
+            System.out.println(
+                    "Error : " + e.getMessage()
+            );
 
             throw e;
 
         } catch (Exception e) {
 
             System.out.println("----------------------------------------");
-            System.out.println("FAIL : " + testName);
+            System.out.println("❌ FAIL : " + testName);
             System.out.println(
-                    "Reason : Selenium encountered an unexpected error."
+                    "Reason : Register link could not be tested."
             );
-            System.out.println("Error : " + e.getClass().getSimpleName());
-            System.out.println("Details : " + e.getMessage());
+            System.out.println(
+                    "Error : " + e.getClass().getSimpleName()
+            );
+            System.out.println(
+                    "Details : " + e.getMessage()
+            );
 
             throw e;
         }

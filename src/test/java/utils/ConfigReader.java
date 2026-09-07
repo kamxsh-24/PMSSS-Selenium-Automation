@@ -16,7 +16,7 @@ public class ConfigReader {
 
             if (input == null) {
                 throw new RuntimeException(
-                        "config.properties file not found in src/main/resources"
+                        "config.properties file not found in resources"
                 );
             }
 
@@ -33,6 +33,7 @@ public class ConfigReader {
 
     public static String getBaseUrl() {
 
+        // Get the value using the KEY
         String url = properties.getProperty("baseUrl");
 
         if (url == null || url.trim().isEmpty()) {
