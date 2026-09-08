@@ -172,4 +172,7 @@ public class LoginPage {
     public void clickSignIn() {
 
     }
+
+    public void clickLogin() {
+    }
 }

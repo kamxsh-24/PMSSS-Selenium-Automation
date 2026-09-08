@@ -1,458 +1,388 @@
 package tests;
 
 import base.BaseTest;
-import pages.LoginPage;
-import pages.DashboardPage;
-
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import pages.DashboardPage;
+import pages.LoginPage;
+
+import java.time.Duration;
 
 public class DashboardTest extends BaseTest {
 
     private LoginPage loginPage;
     private DashboardPage dashboardPage;
-
-    // =========================================================
-    // LOGIN CREDENTIALS
-    // =========================================================
-
-    private final String VALID_EMAIL = "YOUR_REGISTERED_EMAIL";
-    private final String VALID_PASSWORD = "Password@123";
-
-
-    // =========================================================
-    // BEFORE EACH TEST
-    // =========================================================
+    private WebDriverWait wait;
 
     @BeforeMethod
-    public void loginBeforeTest() {
+    public void loginBeforeDashboardTest() {
 
-        System.out.println("\n========================================");
-        System.out.println("STARTING DASHBOARD TEST");
-        System.out.println("========================================");
+        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // Open Login page
+        loginPage = new LoginPage(driver);
+
+        dashboardPage = new DashboardPage(driver);
+
+        // Open login page
         driver.get(
                 utils.ConfigReader.getBaseUrl() + "/login"
         );
 
-        System.out.println("Login page opened");
+        System.out.println("========================================");
+        System.out.println("LOGIN BEFORE DASHBOARD TEST");
+        System.out.println("========================================");
 
-        loginPage = new LoginPage(driver);
+        // Login credentials
+        loginPage.enterEmail("kamesh@gmail.com");
+        loginPage.enterPassword("Kamesh@123");
+        loginPage.clickLoginButton();
 
-        // Login
-        loginPage.enterEmail(VALID_EMAIL);
-        System.out.println("✓ Email entered");
+        // Wait until dashboard is loaded
+        wait.until(
+                ExpectedConditions.urlContains("/dashboard")
+        );
 
-        loginPage.enterPassword(VALID_PASSWORD);
-        System.out.println("✓ Password entered");
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//h1[normalize-space()='Dashboard']")
+                )
+        );
 
-        loginPage.clickSignIn();
-        System.out.println("✓ Sign In button clicked");
-
-        // Create Dashboard Page object
-        dashboardPage = new DashboardPage(driver);
-
-        System.out.println("Current URL: " + driver.getCurrentUrl());
+        System.out.println("✅ Login successful");
+        System.out.println("✅ Dashboard loaded");
     }
 
 
-    // =========================================================
-    // TEST 1 - VERIFY DASHBOARD PAGE
-    // =========================================================
-
-    @Test
+    @Test(priority = 1)
     public void verifyDashboardPage() {
 
-        String testName = "Verify Dashboard Page";
+        System.out.println("\n========================================");
+        System.out.println("TEST 1: DASHBOARD PAGE");
+        System.out.println("========================================");
 
-        try {
+        Assert.assertTrue(
+                dashboardPage.isDashboardHeadingDisplayed(),
+                "Dashboard heading is not displayed"
+        );
 
-            System.out.println("\n----------------------------------------");
-            System.out.println("TEST: " + testName);
-
-            boolean result =
-                    dashboardPage.isDashboardDisplayed();
-
-            Assert.assertTrue(
-                    result,
-                    "Dashboard page is not displayed"
-            );
-
-            System.out.println("✅ PASS : " + testName);
-            System.out.println(
-                    "   Reason : Dashboard page opened successfully."
-            );
-
-        } catch (AssertionError e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Dashboard page was not displayed."
-            );
-            System.out.println(
-                    "   Error : " + e.getMessage()
-            );
-
-            throw e;
-
-        } catch (Exception e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Unexpected Selenium error."
-            );
-            System.out.println(
-                    "   Error : " + e.getClass().getSimpleName()
-            );
-            System.out.println(
-                    "   Details : " + e.getMessage()
-            );
-
-            throw e;
-        }
+        System.out.println("✅ PASS: Dashboard heading");
     }
 
 
-    // =========================================================
-    // TEST 2 - VERIFY DASHBOARD HEADING
-    // =========================================================
+    @Test(priority = 2)
+    public void verifyWelcomeSection() {
 
-    @Test
-    public void verifyDashboardHeading() {
+        System.out.println("\n========================================");
+        System.out.println("TEST 2: WELCOME SECTION");
+        System.out.println("========================================");
 
-        String testName = "Verify Dashboard Heading";
+        Assert.assertTrue(
+                dashboardPage.isWelcomeSubheadingDisplayed(),
+                "Welcome message is not displayed"
+        );
 
-        try {
+        Assert.assertTrue(
+                dashboardPage.isWelcomeStudentNameDisplayed(),
+                "Student name is not displayed"
+        );
 
-            System.out.println("\n----------------------------------------");
-            System.out.println("TEST: " + testName);
-
-            boolean result =
-                    dashboardPage.isDashboardHeadingDisplayed();
-
-            Assert.assertTrue(
-                    result,
-                    "Dashboard heading is not displayed"
-            );
-
-            System.out.println("✅ PASS : " + testName);
-            System.out.println(
-                    "   Reason : Dashboard heading is displayed."
-            );
-
-        } catch (AssertionError e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Dashboard heading is missing."
-            );
-            System.out.println(
-                    "   Error : " + e.getMessage()
-            );
-
-            throw e;
-
-        } catch (Exception e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Selenium error while checking heading."
-            );
-            System.out.println(
-                    "   Error : " + e.getClass().getSimpleName()
-            );
-            System.out.println(
-                    "   Details : " + e.getMessage()
-            );
-
-            throw e;
-        }
+        System.out.println("✅ PASS: Welcome section");
     }
 
 
-    // =========================================================
-    // TEST 3 - VERIFY WELCOME MESSAGE
-    // =========================================================
+    @Test(priority = 3)
+    public void verifySearchInput() {
 
-    @Test
-    public void verifyWelcomeMessage() {
+        System.out.println("\n========================================");
+        System.out.println("TEST 3: SEARCH INPUT");
+        System.out.println("========================================");
 
-        String testName = "Verify Welcome Message";
+        Assert.assertTrue(
+                dashboardPage.isSearchInputDisplayed(),
+                "Search input is not displayed"
+        );
 
-        try {
-
-            System.out.println("\n----------------------------------------");
-            System.out.println("TEST: " + testName);
-
-            boolean result =
-                    dashboardPage.isWelcomeMessageDisplayed();
-
-            Assert.assertTrue(
-                    result,
-                    "Welcome message is not displayed"
-            );
-
-            System.out.println("✅ PASS : " + testName);
-            System.out.println(
-                    "   Reason : Welcome message is displayed."
-            );
-
-        } catch (AssertionError e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Welcome message is missing."
-            );
-            System.out.println(
-                    "   Error : " + e.getMessage()
-            );
-
-            throw e;
-
-        } catch (Exception e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Selenium error while checking welcome message."
-            );
-            System.out.println(
-                    "   Error : " + e.getClass().getSimpleName()
-            );
-            System.out.println(
-                    "   Details : " + e.getMessage()
-            );
-
-            throw e;
-        }
+        System.out.println("✅ PASS: Search input");
     }
 
 
-    // =========================================================
-    // TEST 4 - VERIFY APPLICATION PROGRESS
-    // =========================================================
+    @Test(priority = 4)
+    public void verifyThemeToggle() {
 
-    @Test
+        System.out.println("\n========================================");
+        System.out.println("TEST 4: THEME TOGGLE");
+        System.out.println("========================================");
+
+        Assert.assertTrue(
+                dashboardPage.isThemeToggleDisplayed(),
+                "Theme toggle is not displayed"
+        );
+
+        dashboardPage.clickThemeToggle();
+
+        System.out.println("✅ PASS: Theme toggle clicked");
+    }
+
+
+    @Test(priority = 5)
+    public void verifyProfileDropdown() {
+
+        System.out.println("\n========================================");
+        System.out.println("TEST 5: PROFILE DROPDOWN");
+        System.out.println("========================================");
+
+        dashboardPage.clickProfileMenu();
+
+        Assert.assertTrue(
+                dashboardPage.isProfileDropdownDisplayed(),
+                "Profile dropdown is not displayed"
+        );
+
+        Assert.assertTrue(
+                dashboardPage.isMyProfileLinkDisplayed(),
+                "My Profile link is not displayed"
+        );
+
+        Assert.assertTrue(
+                dashboardPage.isMyApplicationLinkDisplayed(),
+                "My Application link is not displayed"
+        );
+
+        Assert.assertTrue(
+                dashboardPage.isTrackStatusLinkDisplayed(),
+                "Track Status link is not displayed"
+        );
+
+        Assert.assertTrue(
+                dashboardPage.isLogoutButtonDisplayed(),
+                "Logout button is not displayed"
+        );
+
+        System.out.println("✅ PASS: Profile dropdown");
+    }
+
+
+    @Test(priority = 6)
+    public void verifyNotificationButton() {
+
+        System.out.println("\n========================================");
+        System.out.println("TEST 6: NOTIFICATION BUTTON");
+        System.out.println("========================================");
+
+        Assert.assertTrue(
+                dashboardPage.isNotificationButtonDisplayed(),
+                "Notification button is not displayed"
+        );
+
+        dashboardPage.clickNotificationButton();
+
+        System.out.println("✅ PASS: Notification button");
+    }
+
+
+    @Test(priority = 7)
+    public void verifyWelcomeBanner() {
+
+        System.out.println("\n========================================");
+        System.out.println("TEST 7: WELCOME BANNER");
+        System.out.println("========================================");
+
+        Assert.assertTrue(
+                dashboardPage.isWelcomeBannerDisplayed(),
+                "Welcome banner is not displayed"
+        );
+
+        System.out.println("✅ PASS: Welcome banner");
+    }
+
+
+    @Test(priority = 8)
+    public void verifyApplicationSummary() {
+
+        System.out.println("\n========================================");
+        System.out.println("TEST 8: APPLICATION SUMMARY");
+        System.out.println("========================================");
+
+        Assert.assertTrue(
+                dashboardPage.isApplicationIdDisplayed(),
+                "Application ID is not displayed"
+        );
+
+        Assert.assertTrue(
+                dashboardPage.isApplicationStatusDisplayed(),
+                "Application status is not displayed"
+        );
+
+        Assert.assertTrue(
+                dashboardPage.isProfileCompletionDisplayed(),
+                "Profile completion is not displayed"
+        );
+
+        Assert.assertTrue(
+                dashboardPage.isDocumentsUploadedDisplayed(),
+                "Documents uploaded count is not displayed"
+        );
+
+        System.out.println("✅ PASS: Application summary");
+    }
+
+
+    @Test(priority = 9)
     public void verifyApplicationProgress() {
 
-        String testName = "Verify Application Progress";
+        System.out.println("\n========================================");
+        System.out.println("TEST 9: APPLICATION PROGRESS");
+        System.out.println("========================================");
 
-        try {
+        Assert.assertTrue(
+                dashboardPage.isApplicationProgressDisplayed(),
+                "Application Progress heading is not displayed"
+        );
 
-            System.out.println("\n----------------------------------------");
-            System.out.println("TEST: " + testName);
+        Assert.assertTrue(
+                dashboardPage.isRegistrationStepDisplayed(),
+                "Registration step is not displayed"
+        );
 
-            boolean result =
-                    dashboardPage.isApplicationProgressDisplayed();
+        Assert.assertTrue(
+                dashboardPage.isProfileStepDisplayed(),
+                "Profile step is not displayed"
+        );
 
-            Assert.assertTrue(
-                    result,
-                    "Application Progress section is not displayed"
-            );
+        Assert.assertTrue(
+                dashboardPage.isDocumentsStepDisplayed(),
+                "Documents step is not displayed"
+        );
 
-            System.out.println("✅ PASS : " + testName);
-            System.out.println(
-                    "   Reason : Application Progress section is displayed."
-            );
+        Assert.assertTrue(
+                dashboardPage.isInstituteVerificationStepDisplayed(),
+                "Institute Verification step is not displayed"
+        );
 
-        } catch (AssertionError e) {
+        Assert.assertTrue(
+                dashboardPage.isOfficerVerificationStepDisplayed(),
+                "Officer Verification step is not displayed"
+        );
 
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Application Progress section is missing."
-            );
-            System.out.println(
-                    "   Error : " + e.getMessage()
-            );
+        Assert.assertTrue(
+                dashboardPage.isFinalDecisionStepDisplayed(),
+                "Final Decision step is not displayed"
+        );
 
-            throw e;
-
-        } catch (Exception e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Selenium error while checking application progress."
-            );
-            System.out.println(
-                    "   Error : " + e.getClass().getSimpleName()
-            );
-            System.out.println(
-                    "   Details : " + e.getMessage()
-            );
-
-            throw e;
-        }
+        System.out.println("✅ PASS: Application progress");
     }
 
 
-    // =========================================================
-    // TEST 5 - VERIFY NOTIFICATIONS
-    // =========================================================
+    @Test(priority = 10)
+    public void verifyRecentActivity() {
 
-    @Test
-    public void verifyNotifications() {
+        System.out.println("\n========================================");
+        System.out.println("TEST 10: RECENT ACTIVITY");
+        System.out.println("========================================");
 
-        String testName = "Verify Notifications";
+        Assert.assertTrue(
+                dashboardPage.isRecentActivityDisplayed(),
+                "Recent Activity is not displayed"
+        );
 
-        try {
-
-            System.out.println("\n----------------------------------------");
-            System.out.println("TEST: " + testName);
-
-            boolean result =
-                    dashboardPage.isNotificationsDisplayed();
-
-            Assert.assertTrue(
-                    result,
-                    "Notifications section is not displayed"
-            );
-
-            System.out.println("✅ PASS : " + testName);
-            System.out.println(
-                    "   Reason : Notifications section is displayed."
-            );
-
-        } catch (AssertionError e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Notifications section is missing."
-            );
-            System.out.println(
-                    "   Error : " + e.getMessage()
-            );
-
-            throw e;
-
-        } catch (Exception e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Selenium error while checking notifications."
-            );
-            System.out.println(
-                    "   Error : " + e.getClass().getSimpleName()
-            );
-            System.out.println(
-                    "   Details : " + e.getMessage()
-            );
-
-            throw e;
-        }
+        System.out.println("✅ PASS: Recent Activity");
     }
 
 
-    // =========================================================
-    // TEST 6 - VERIFY MY DOCUMENTS
-    // =========================================================
+    @Test(priority = 11)
+    public void verifyImportantNotifications() {
 
-    @Test
+        System.out.println("\n========================================");
+        System.out.println("TEST 11: IMPORTANT NOTIFICATIONS");
+        System.out.println("========================================");
+
+        Assert.assertTrue(
+                dashboardPage.isImportantNotificationsDisplayed(),
+                "Important Notifications is not displayed"
+        );
+
+        System.out.println("✅ PASS: Important Notifications");
+    }
+
+
+    @Test(priority = 12)
     public void verifyMyDocuments() {
 
-        String testName = "Verify My Documents";
+        System.out.println("\n========================================");
+        System.out.println("TEST 12: MY DOCUMENTS");
+        System.out.println("========================================");
 
-        try {
+        Assert.assertTrue(
+                dashboardPage.isMyDocumentsDisplayed(),
+                "My Documents is not displayed"
+        );
 
-            System.out.println("\n----------------------------------------");
-            System.out.println("TEST: " + testName);
+        Assert.assertTrue(
+                dashboardPage.isUploadedTabDisplayed(),
+                "Uploaded tab is not displayed"
+        );
 
-            boolean result =
-                    dashboardPage.isMyDocumentsDisplayed();
+        Assert.assertTrue(
+                dashboardPage.isPendingTabDisplayed(),
+                "Pending tab is not displayed"
+        );
 
-            Assert.assertTrue(
-                    result,
-                    "My Documents section is not displayed"
-            );
+        Assert.assertTrue(
+                dashboardPage.isRejectedTabDisplayed(),
+                "Rejected tab is not displayed"
+        );
 
-            System.out.println("✅ PASS : " + testName);
-            System.out.println(
-                    "   Reason : My Documents section is displayed."
-            );
-
-        } catch (AssertionError e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : My Documents section is missing."
-            );
-            System.out.println(
-                    "   Error : " + e.getMessage()
-            );
-
-            throw e;
-
-        } catch (Exception e) {
-
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Selenium error while checking documents."
-            );
-            System.out.println(
-                    "   Error : " + e.getClass().getSimpleName()
-            );
-            System.out.println(
-                    "   Details : " + e.getMessage()
-            );
-
-            throw e;
-        }
+        System.out.println("✅ PASS: My Documents");
     }
 
 
-    // =========================================================
-    // TEST 7 - VERIFY QUICK ACTIONS
-    // =========================================================
-
-    @Test
+    @Test(priority = 13)
     public void verifyQuickActions() {
 
-        String testName = "Verify Quick Actions";
+        System.out.println("\n========================================");
+        System.out.println("TEST 13: QUICK ACTIONS");
+        System.out.println("========================================");
 
-        try {
+        Assert.assertTrue(
+                dashboardPage.isCompleteProfileDisplayed(),
+                "Complete Profile action is not displayed"
+        );
 
-            System.out.println("\n----------------------------------------");
-            System.out.println("TEST: " + testName);
+        Assert.assertTrue(
+                dashboardPage.isUploadDocumentsDisplayed(),
+                "Upload Documents action is not displayed"
+        );
 
-            boolean result =
-                    dashboardPage.isQuickActionsDisplayed();
+        Assert.assertTrue(
+                dashboardPage.isViewApplicationDisplayed(),
+                "View Application action is not displayed"
+        );
 
-            Assert.assertTrue(
-                    result,
-                    "Quick Actions section is not displayed"
-            );
+        Assert.assertTrue(
+                dashboardPage.isCheckStatusDisplayed(),
+                "Check Application Status action is not displayed"
+        );
 
-            System.out.println("✅ PASS : " + testName);
-            System.out.println(
-                    "   Reason : Quick Actions section is displayed."
-            );
+        System.out.println("✅ PASS: Quick Actions");
+    }
 
-        } catch (AssertionError e) {
 
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Quick Actions section is missing."
-            );
-            System.out.println(
-                    "   Error : " + e.getMessage()
-            );
+    @Test(priority = 14)
+    public void verifyChatbotWidget() {
 
-            throw e;
+        System.out.println("\n========================================");
+        System.out.println("TEST 14: AI ASSISTANT");
+        System.out.println("========================================");
 
-        } catch (Exception e) {
+        Assert.assertTrue(
+                dashboardPage.isChatbotDisplayed(),
+                "AI Assistant widget is not displayed"
+        );
 
-            System.out.println("❌ FAIL : " + testName);
-            System.out.println(
-                    "   Reason : Selenium error while checking Quick Actions."
-            );
-            System.out.println(
-                    "   Error : " + e.getClass().getSimpleName()
-            );
-            System.out.println(
-                    "   Details : " + e.getMessage()
-            );
-
-            throw e;
-        }
+        System.out.println("✅ PASS: AI Assistant");
     }
 }
