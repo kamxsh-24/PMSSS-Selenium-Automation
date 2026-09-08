@@ -168,4 +168,8 @@ public class LoginPage {
                 )
         ).click();
     }
+
+    public void clickSignIn() {
+
+    }
 }
